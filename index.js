@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 
 // Sử dụng middleware cho CORS
 app.use(cors());
-// Sử dụng routes để origin đường dẫn tránh việc để trước cros để hạn chế việc trình duyệ yêu cầu truy cập
+// Sử dụng routes để origin đường dẫn tránh việc để trước cros để hạn chế việc trình duyệt yêu cầu truy cập
 app.use(routes);
 
 // upload và đổi tên phù hợp lưu ở thư mục gốc
@@ -40,62 +40,62 @@ connection.query('SELECT * FROM tailieu', (err, results) => {
 });
 // xử lý file với tailieu
 // Endpoint thêm tài liệu
-app.post('/api/tailieu', upload.single('file'), (req, res) => {
-  const { originalname } = req.file;
-  const timestamp = moment().format('x');
-  const MaTaiLieu = 'TL' + timestamp;
-  // const { MaTaiLieu } = req.body;
-  // Lưu thông tin tài liệu vào cơ sở dữ liệu
-  const query = 'INSERT INTO tailieu (MaTaiLieu, TenTaiLieu) VALUES (?, ?)';
-  connection.query(query, [MaTaiLieu, originalname], (error, results) => {
-    if (error) {
-      console.error('Lỗi truy vấn: ', error);
-      res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu.' });
-    } else {
-      res.json({ message: 'Thêm tài liệu thành công.' });
-    }
-  });
-});
+// app.post('/api/tailieu', upload.single('file'), (req, res) => {
+//   const { originalname } = req.file;
+//   const timestamp = moment().format('x');
+//   const MaTaiLieu = 'TL' + timestamp;
+//   // const { MaTaiLieu } = req.body;
+//   // Lưu thông tin tài liệu vào cơ sở dữ liệu
+//   const query = 'INSERT INTO tailieu (MaTaiLieu, TenTaiLieu) VALUES (?, ?)';
+//   connection.query(query, [MaTaiLieu, originalname], (error, results) => {
+//     if (error) {
+//       console.error('Lỗi truy vấn: ', error);
+//       res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu.' });
+//     } else {
+//       res.json({ message: 'Thêm tài liệu thành công.' });
+//     }
+//   });
+// });
 
 // Endpoint lấy thông tin tất cả tài liệu
-app.get('/api/tailieu', (req, res) => {
-  const query = 'SELECT * FROM tailieu';
-  connection.query(query, (error, results) => {
-    if (error) {
-      console.error('Lỗi truy vấn: ', error);
-      res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu.' });
-    } else {
-      res.json(results);
-    }
-  });
-});
+// app.get('/api/tailieu', (req, res) => {
+//   const query = 'SELECT * FROM tailieu';
+//   connection.query(query, (error, results) => {
+//     if (error) {
+//       console.error('Lỗi truy vấn: ', error);
+//       res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu.' });
+//     } else {
+//       res.json(results);
+//     }
+//   });
+// });
 
 // Chỉnh sửa tài liệu
-app.put('/api/tailieu/:id', (req, res) => {
-  const MaTaiLieu = req.params.id;
-  const { originalname } = req.file;
-  // const TenTaiLieu = req.body.TenTaiLieu;
-  connection.query('UPDATE tailieu SET TenTaiLieu = ? WHERE MaTaiLieu = ?', [TenTaiLieu, MaTaiLieu], (error) => {
-    if (error) throw error;
-    res.json({ MaTaiLieu, TenTaiLieu });
-  });
-});
+// app.put('/api/tailieu/:id', (req, res) => {
+//   const MaTaiLieu = req.params.id;
+//   const { originalname } = req.file;
+//   // const TenTaiLieu = req.body.TenTaiLieu;
+//   connection.query('UPDATE tailieu SET TenTaiLieu = ? WHERE MaTaiLieu = ?', [TenTaiLieu, MaTaiLieu], (error) => {
+//     if (error) throw error;
+//     res.json({ MaTaiLieu, TenTaiLieu });
+//   });
+// });
 
 // Endpoint xóa tài liệu
-app.delete('/api/tailieu/:id', (req, res) => {
-  const id = req.params.id;
-  const query = 'DELETE FROM tailieu WHERE MaTaiLieu = ?';
-  connection.query(query, [id], (error, results) => {
-    if (error) {
-      console.error('Lỗi truy vấn: ', error);
-      res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu.' });
-    } else if (results.affectedRows === 0) {
-      res.status(404).json({ error: 'Không tìm thấy tài liệu.' });
-    } else {
-      res.json({ message: 'Xóa tài liệu thành công.' });
-    }
-  });
-});
+// app.delete('/api/tailieu/:id', (req, res) => {
+//   const id = req.params.id;
+//   const query = 'DELETE FROM tailieu WHERE MaTaiLieu = ?';
+//   connection.query(query, [id], (error, results) => {
+//     if (error) {
+//       console.error('Lỗi truy vấn: ', error);
+//       res.status(500).json({ error: 'Lỗi truy vấn cơ sở dữ liệu.' });
+//     } else if (results.affectedRows === 0) {
+//       res.status(404).json({ error: 'Không tìm thấy tài liệu.' });
+//     } else {
+//       res.json({ message: 'Xóa tài liệu thành công.' });
+//     }
+//   });
+// });
 
 //
 
@@ -112,7 +112,7 @@ app.delete('/api/tailieu/:id', (req, res) => {
 // });
 // Thử với tên là string không phải file name
 // Tài liệu mới
-// app.post('/api/tailieu/create', (req, res) => {
+// app.post('/api/tailieu', (req, res) => {
 //   // const { MaTaiLieu, TenTaiLieu } = req.body; // Sử dụng destructuring để trích xuất giá trị từ req.body
 //   const { MaTaiLieu } = req.body;
 //   const { TenTaiLieu } = req.body;
